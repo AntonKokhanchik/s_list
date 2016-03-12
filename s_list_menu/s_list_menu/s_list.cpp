@@ -24,11 +24,11 @@ bool s_list::is_empty()
 s_list::node* s_list::stels_find(int ph)
 {
 	if (is_empty())
-		throw "empty list";
+		throw  "empty list";
 	node* tmp = iph_first;
 	while (tmp)
 	{
-		if (tmp->phone > ph)
+		if (tmp->phone >= ph)
 			return tmp;
 		tmp = tmp->phone_next;
 	}
@@ -41,7 +41,7 @@ s_list::node* s_list::stels_find(string f)
 	node* tmp = if_first;
 	while (tmp)
 	{
-		if (tmp->fam > f)
+		if (tmp->fam >= f)
 			return tmp;
 		tmp = tmp->fam_next;
 	}
@@ -74,7 +74,7 @@ void s_list::push(int ph, string f)
 	{
 		if (p->phone_prev)
 			p->phone_prev->phone_next = tmp;
-		else iph_first;
+		else iph_first = tmp;
 		tmp->phone_next = p;
 		tmp->phone_prev = p->phone_prev;
 		p->phone_prev = tmp;
@@ -92,7 +92,7 @@ void s_list::push(int ph, string f)
 	{
 		if (p->fam_prev)
 			p->fam_prev->fam_next = tmp;
-		else if_first;
+		else if_first = tmp;
 		tmp->fam_next = p;
 		tmp->fam_prev = p->fam_prev;
 		p->fam_prev = tmp;
@@ -215,9 +215,9 @@ void s_list::clear()
 }
 
 s_list::iterator s_list::get_iph_first(){ return iph_first; }
-s_list::iterator s_list::get_dph_first(){ return if_first; }
-s_list::iterator s_list::get_df_first(){ return dph_first; }
-s_list::iterator s_list::get_if_first(){ return df_first; }
+s_list::iterator s_list::get_dph_first(){ return dph_first; }
+s_list::iterator s_list::get_df_first(){ return df_first; }
+s_list::iterator s_list::get_if_first(){ return if_first; }
 
 int s_list::get_phone(iterator i)
 {
