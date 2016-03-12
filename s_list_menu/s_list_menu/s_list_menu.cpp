@@ -12,13 +12,13 @@
 using namespace std;
 
 #define txt "Enter:\n"\
-"1 push\n"\
-"2 pop\n"\
-"3 find element\n"\
-"4 clear list\n"\
-"5 show me all\n"\
-"6 clear screen\n"\
-"ESC to exit\n\n"
+	"1 push\n"\
+	"2 pop\n"\
+	"3 find element\n"\
+	"4 clear list\n"\
+	"5 show me all\n"\
+	"6 clear screen\n"\
+	"ESC to exit\n\n"
 
 char menu(s_list&);
 void PUSH(s_list&);
@@ -76,20 +76,40 @@ void POP(s_list& List)
 	switch (ch)
 	{
 	case '1':
-	{
-		int ph;
-		cout << "Enter element's phone:  ";
-		cin >> ph;
-		List.pop(ph);
-	} break;
+		{
+			int ph;
+			cout << "Enter element's phone:  ";
+			cin >> ph;
+			try
+			{
+				List.pop(ph);
+			}
+			catch(char* exc)
+			{
+				if(exc=="element not exist")
+					cout << "looking element is not exist\n";
+				else if(exc=="empty list")
+					cout << "list is empty\n";
+			}
+		} break;
 
 	case '2':
-	{
-		string f;
-		cout << "Enter element's family:  ";
-		cin >> f;
-		List.pop(f);
-	} break;
+		{
+			string f;
+			cout << "Enter element's family:  ";
+			cin >> f;
+			try
+			{
+				List.pop(f);
+			}
+			catch(char* exc)
+			{
+				if(exc=="element not exist")
+					cout << "looking element is not exist\n";
+				else if(exc=="empty list")
+					cout << "list is empty\n";
+			}
+		} break;
 	}
 }
 
@@ -100,73 +120,104 @@ void FIND(s_list& List)
 	switch (ch)
 	{
 	case '1':
-	{
-		int ph;
-		cout << "Enter element's phone:  ";
-		cin >> ph;
-		bool flag = List.find(ph);
-		if (flag)
-			cout << "Element " << ph << " was finded\n";
-		else
-			cout << "Element " << ph << " wasn't finded\n";
-	} break;
+		{
+			int ph;
+			cout << "Enter element's phone:  ";
+			cin >> ph;
+			try
+			{
+				bool flag = List.find(ph);
+				if (flag)
+					cout << "Element " << ph << " was finded\n";			
+				//по-моему, не полезно, надо вывести фамилию, зная телефон
+				else
+					cout << "Element " << ph << " wasn't finded\n";
+			}
+			catch(char* exc)
+			{
+				if(exc=="empty list")
+					cout << "list is empty\n";
+			}
+		} break;
 
 	case '2':
-	{
-		string f;
-		cout << "Enter element's phone:  ";
-		cin >> f;
-		bool flag = List.find(f);
-		if (flag)
-			cout << "Element " << f << " was finded\n";
-		else
-			cout << "Element " << f << " wasn't finded\n";
-	} break;
+		{
+			string f;
+			cout << "Enter element's phone:  ";
+			cin >> f;
+			try
+			{
+				bool flag = List.find(f);
+				if (flag)
+					cout << "Element " << f << " was finded\n";
+				else
+					cout << "Element " << f << " wasn't finded\n";
+			}
+			catch(char* exc)
+			{
+				if(exc=="empty list")
+					cout << "list is empty\n";
+			}
+		} break;
 	}
 }
 
 void CLEAR(s_list& List)
 {
-	List.clear();
+	try
+	{
+		List.clear();
+	}
+	catch (char* exc)
+	{
+		if (exc=="empty list")
+			cout << "list is empty\n";
+	}
+
 }
 
 void SHOW(s_list& List)
 {
+	if (List.is_empty())
+	{
+		cout << "list is empty\n";
+		return;
+	}
 	cout << "1. show to phone\n" << "2. show to family\n";
 	char ch = _getch();
 	switch (ch)
 	{
 	case '1':
-	{
-		s_list::iterator r = List.get_iph_first();
-		s_list::iterator l = List.get_dph_first();
-
-		cout << "forvard\t\tinvers\n";
-		while (r)
 		{
-			cout << List.get_fam(r) << "\t" << List.get_fam(l) << endl;
-			cout << List.get_phone(r) << "\t" << List.get_phone(l) << endl << endl;
+			s_list::iterator l = List.get_iph_first();
+			s_list::iterator r = List.get_dph_first();
 
-			r = List.get_iph_next(r);
-			l = List.get_dph_next(l);
-		}
-	}
+			cout << "forvard\t\tinvers\n";
+			while (r)
+			{
+				cout << List.get_fam(l) << "\t" << List.get_fam(r) << endl;
+				cout << List.get_phone(l) << "\t" << List.get_phone(r) << endl << endl;
+
+				l = List.get_iph_next(l);
+				r = List.get_dph_next(r);
+			}
+		}break;
 
 	case '2':
-	{
-		s_list::iterator r = List.get_if_first();
-		s_list::iterator l = List.get_df_first();
-
-		cout << "forvard\t\tinvers\n";
-		while (r)
 		{
-			cout << List.get_fam(r) << "\t" << List.get_fam(l) << endl;
-			cout << List.get_phone(r) << "\t" << List.get_phone(l) << endl << endl;
+			s_list::iterator r = List.get_if_first();
+			s_list::iterator l = List.get_df_first();
 
-			r = List.get_if_next(r);
-			l = List.get_df_next(l);
+			cout << "forvard\t\tinvers\n";
+			while (r)
+			{
+				cout << List.get_fam(r) << "\t" << List.get_fam(l) << endl;
+				cout << List.get_phone(r) << "\t" << List.get_phone(l) << endl << endl;
+
+				r = List.get_if_next(r);
+				l = List.get_df_next(l);
+			}
 		}
-	}
 	}
 }
 
